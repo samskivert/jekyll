@@ -29,7 +29,7 @@ module Jekyll
             tmp_options[key] = value
           end
           tmp_options = tmp_options.to_a.sort.collect { |opt| opt.join('=') }
-          # additional options to pass to Albino
+          # additional options to pass to Pygments
           @options = { 'O' => tmp_options.join(',') }
         else
           @options = {}
@@ -48,7 +48,7 @@ module Jekyll
     end
 
     def render_pygments(context, code)
-      output = add_code_tags(Albino.new(code, @lang).to_s(@options), @lang)
+      output = add_code_tags(Pygments.highlight(code, :lexer => @lang, :options => @options), @lang)
       output = context["pygments_prefix"] + output if context["pygments_prefix"]
       output = output + context["pygments_suffix"] if context["pygments_suffix"]
       output
